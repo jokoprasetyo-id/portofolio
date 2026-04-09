@@ -120,6 +120,79 @@ nav{
 }
 .nav-cta:hover{background:var(--accent)!important}
 
+/* hamburger */
+.ham{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  gap:5px;
+  width:36px;height:36px;
+  border-radius:10px;
+  background:rgba(0,0,0,0.05);
+  border:none;cursor:pointer;
+  padding:0 9px;
+  flex-shrink:0;
+}
+.ham span{
+  display:block;width:100%;height:2px;
+  background:var(--ink);border-radius:2px;
+  transition:transform .25s,opacity .25s;
+}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* mobile drawer */
+.mobile-drawer{
+  display:none;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  z-index:95;
+}
+.drawer-backdrop{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.25);
+  backdrop-filter:blur(3px);
+}
+.drawer-panel{
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:72vw;max-width:280px;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-left:1px solid rgba(255,255,255,0.8);
+  box-shadow:-8px 0 40px rgba(0,0,0,0.1);
+  padding:5rem 1.5rem 2rem;
+  display:flex;flex-direction:column;gap:.3rem;
+  transform:translateX(100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.mobile-drawer.open{display:block}
+.mobile-drawer.open .drawer-panel{transform:translateX(0)}
+.drawer-link{
+  display:block;
+  padding:.75rem 1rem;
+  border-radius:10px;
+  font-size:.9rem;font-weight:400;
+  color:var(--ink2);
+  text-decoration:none;
+  transition:.15s;
+}
+.drawer-link:hover{background:rgba(26,86,219,0.07);color:var(--accent)}
+.drawer-cta{
+  display:block;
+  margin-top:.5rem;
+  padding:.75rem 1rem;
+  border-radius:10px;
+  font-size:.9rem;font-weight:500;
+  background:var(--ink);color:#fff;
+  text-decoration:none;
+  text-align:center;
+  transition:.15s;
+}
+.drawer-cta:hover{background:var(--accent)}
+
 /* ── HERO ── */
 #home{
   min-height:100vh;
@@ -717,13 +790,13 @@ footer strong{color:rgba(255,255,255,0.85);font-weight:400}
   .skills-grid{grid-template-columns:1fr 1fr}
   .cert-grid{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
-  .nav-links li:not(:last-child){display:none}
+  .nav-links{display:none}
+  .ham{display:flex}
 }
 @media(max-width:600px){
   .edu-grid,.skills-grid{grid-template-columns:1fr}
   .highlights{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
-  .nav-links{display:none}
   h1{font-size:2.2rem}
 }
 
@@ -783,6 +856,49 @@ footer strong{color:rgba(255,255,255,0.85);font-weight:400}
 @media(max-width:600px){
   .oto-badge{bottom:4.5rem;left:1rem}
 }
+
+/* ── FLOATING BNSP BADGE ── */
+.bnsp-badge{
+  position:fixed;
+  top:5.5rem;
+  right:1.5rem;
+  z-index:89;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.45rem .9rem .45rem .55rem;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(245,158,11,0.25);
+  border-radius:50px;
+  box-shadow:0 4px 20px rgba(245,158,11,0.1),inset 0 1px 0 rgba(255,255,255,0.9);
+  animation:bnsp-float 5s ease-in-out infinite;
+  transition:box-shadow .25s,transform .25s;
+}
+.bnsp-badge:hover{
+  box-shadow:0 8px 28px rgba(245,158,11,0.18),inset 0 1px 0 rgba(255,255,255,0.9);
+  transform:translateY(-2px);
+}
+.bnsp-icon{
+  width:26px;height:26px;
+  border-radius:50%;
+  background:rgba(245,158,11,0.12);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.bnsp-text{
+  display:flex;flex-direction:column;line-height:1.2;
+}
+.bnsp-label{font-size:.62rem;color:var(--ink3);font-weight:400}
+.bnsp-value{font-size:.74rem;color:#b45309;font-weight:600;letter-spacing:.01em}
+@keyframes bnsp-float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+@media(max-width:900px){
+  .bnsp-badge{top:auto;bottom:1.5rem;right:1rem}
+}
 </style>
 </head>
 <body>
@@ -799,8 +915,24 @@ footer strong{color:rgba(255,255,255,0.85);font-weight:400}
       <li><a href="#certifications">Sertifikasi</a></li>
       <li><a href="#contact" class="nav-cta">Hubungi</a></li>
     </ul>
+    <button class="ham" id="hamBtn" aria-label="Menu" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="drawer" onclick="closeDrawerOutside(event)">
+  <div class="drawer-backdrop"></div>
+  <div class="drawer-panel">
+    <a href="#about" class="drawer-link" onclick="closeDrawer()">Tentang</a>
+    <a href="#experience" class="drawer-link" onclick="closeDrawer()">Pengalaman</a>
+    <a href="#education" class="drawer-link" onclick="closeDrawer()">Pendidikan</a>
+    <a href="#skills" class="drawer-link" onclick="closeDrawer()">Keahlian</a>
+    <a href="#certifications" class="drawer-link" onclick="closeDrawer()">Sertifikasi</a>
+    <a href="#contact" class="drawer-cta" onclick="closeDrawer()">Hubungi Saya</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="home">
@@ -866,6 +998,17 @@ footer strong{color:rgba(255,255,255,0.85);font-weight:400}
   <div class="oto-text">
     <span class="oto-label">Status Saat Ini</span>
     <span class="oto-value">Open to Opportunities</span>
+  </div>
+</div>
+
+<!-- FLOATING BNSP BADGE -->
+<div class="bnsp-badge">
+  <div class="bnsp-icon">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+  </div>
+  <div class="bnsp-text">
+    <span class="bnsp-label">Sertifikasi Nasional</span>
+    <span class="bnsp-value">BNSP Certified</span>
   </div>
 </div>
 
@@ -1408,6 +1551,23 @@ footer strong{color:rgba(255,255,255,0.85);font-weight:400}
 // Scroll reveal
 const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// Mobile drawer
+function toggleDrawer(){
+  const d=document.getElementById('drawer');
+  const b=document.getElementById('hamBtn');
+  const open=d.classList.toggle('open');
+  b.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('hamBtn').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeDrawerOutside(e){
+  if(e.target===document.getElementById('drawer')||e.target.classList.contains('drawer-backdrop'))closeDrawer();
+}
 
 // Skill bars
 const so=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.bar-fill').forEach(f=>{setTimeout(()=>{f.style.width=f.dataset.w+'%'},200)});so.unobserve(e.target)}})},{threshold:.3});
