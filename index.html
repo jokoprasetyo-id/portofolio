@@ -1,3244 +1,1450 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joko Prasetyo - GIS Analyst</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0a66c2;
-            --primary-dark: #004182;
-            --primary-light: #e8f0fe;
-            --secondary: #00a0dc;
-            --accent: #f59e0b;
-            --dark: #1a1a2e;
-            --dark-2: #16213e;
-            --text: #2d3748;
-            --text-light: #718096;
-            --bg: #f7fafc;
-            --white: #ffffff;
-            --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --hover-shadow: 0 8px 30px rgba(10,102,194,0.15);
-            --border: #e2e8f0;
-            --gradient: linear-gradient(135deg, #0a66c2 0%, #00a0dc 100%);
-            --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joko Prasetyo — GIS Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-        }
-
-        /* ===== NAVBAR ===== */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            padding: 0 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 65px;
-        }
-
-        .nav-logo {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .nav-logo span {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 0.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            font-size: 0.85rem;
-            font-weight: 500;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-
-        .nav-links a:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .nav-cta {
-            background: var(--gradient) !important;
-            color: white !important;
-            border-radius: 20px !important;
-            padding: 0.4rem 1rem !important;
-        }
-
-        .nav-cta:hover {
-            background: var(--primary-dark) !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(10,102,194,0.3) !important;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: var(--text);
-            border-radius: 2px;
-            transition: 0.3s;
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            min-height: 100vh;
-            background: var(--gradient-dark);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding-top: 65px;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(10,102,194,0.3) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(0,160,220,0.2) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        /* Map grid overlay */
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(10,102,194,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(10,102,194,0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(10,102,194,0.2);
-            border: 1px solid rgba(10,102,194,0.4);
-            color: #60a5fa;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(5px);
-        }
-
-        .hero-badge i {
-            color: var(--accent);
-        }
-
-        .hero-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 3.2rem;
-            font-weight: 800;
-            color: white;
-            line-height: 1.2;
-            margin-bottom: 0.5rem;
-        }
-
-        .hero-title .highlight {
-            background: linear-gradient(135deg, #60a5fa, #00a0dc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #60a5fa;
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-
-        .hero-degree {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-description {
-            color: rgba(255,255,255,0.75);
-            font-size: 1rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--gradient);
-            color: white;
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(10,102,194,0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(10,102,194,0.5);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: transparent;
-            color: white;
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.6);
-            transform: translateY(-2px);
-        }
-
-        /* Hero Visual */
-        .hero-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .profile-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 2.5rem;
-            text-align: center;
-            width: 100%;
-            max-width: 320px;
-            position: relative;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 3rem;
-            color: white;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            border: 4px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 30px rgba(10,102,194,0.4);
-        }
-
-        .profile-name {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.3rem;
-        }
-
-        .profile-role {
-            color: #60a5fa;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .profile-info-list {
-            list-style: none;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .profile-info-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.82rem;
-        }
-
-        .profile-info-list li i {
-            color: #60a5fa;
-            width: 16px;
-            flex-shrink: 0;
-        }
-
-        .profile-info-list li a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .profile-info-list li a:hover {
-            color: #60a5fa;
-        }
-
-        .floating-badge {
-            position: absolute;
-            background: white;
-            border-radius: 12px;
-            padding: 0.6rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .floating-badge.badge-1 {
-            top: -15px;
-            right: -20px;
-            color: var(--primary);
-            animation-delay: 0s;
-        }
-
-        .floating-badge.badge-2 {
-            bottom: 20px;
-            left: -25px;
-            color: #10b981;
-            animation-delay: 1.5s;
-        }
-
-        .floating-badge i {
-            font-size: 1rem;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        /* ===== SECTION STYLES ===== */
-        section {
-            padding: 5rem 2rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-
-        .section-tag {
-            display: inline-block;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        .section-divider {
-            width: 60px;
-            height: 4px;
-            background: var(--gradient);
-            border-radius: 2px;
-            margin: 0 auto;
-        }
-
-/* ===== FIX OVERLAP ABOUT SECTION ===== */
-@media (max-width: 1024px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .about-sidebar {
-        position: static !important;
-        top: auto !important;
-    }
-
-    .about-card {
-        margin-bottom: 1rem;
-    }
+:root{
+  --ink:#0d1117;
+  --ink2:#3a4050;
+  --ink3:#7a8099;
+  --paper:#f5f3ef;
+  --paper2:#ece9e3;
+  --accent:#1a56db;
+  --accent2:#0e9f6e;
+  --glass-bg:rgba(255,255,255,0.55);
+  --glass-border:rgba(255,255,255,0.75);
+  --glass-shadow:0 8px 32px rgba(0,0,0,0.08);
+  --blur:blur(18px) saturate(160%);
+  --r:16px;
+  --r-sm:10px;
 }
 
-@media (max-width: 768px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .about-sidebar {
-        position: static !important;
-    }
-
-    .about-highlights {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
-
-    #about {
-        padding: 3rem 1.2rem;
-    }
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
 }
 
-
-        /* ===== ABOUT SECTION ===== */
-        #about {
-    background: white;
-    position: relative;
-    z-index: 2;
-    overflow: hidden;
+/* ── MESH BACKGROUND ── */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 800px 600px at 10% 20%,rgba(26,86,219,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 600px 500px at 85% 70%,rgba(14,159,110,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 500px 400px at 50% 40%,rgba(255,255,255,0.3) 0%,transparent 60%);
+  pointer-events:none;
+  z-index:0;
 }
 
-        .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 3rem;
-    align-items: start;
-    overflow: visible;
+/* Dot grid */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(rgba(0,0,0,0.07) 1px,transparent 1px);
+  background-size:28px 28px;
+  pointer-events:none;
+  z-index:0;
 }
 
-        .about-sidebar {
-    position: relative;
-    top: auto;
-    align-self: flex-start;
+/* ── GLASS MIXIN ── */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:var(--blur);
+  -webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,0.9);
+  border-radius:var(--r);
 }
 
-        .about-card {
-    background: var(--gradient-dark);
-    border-radius: 20px;
-    padding: 2rem;
-    color: white;
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 1;
-    isolation: isolate;
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:1.2rem;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:100;
+  width:calc(100% - 3rem);
+  max-width:900px;
+}
+.nav-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:.6rem 1.2rem;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.85);
+  border-radius:50px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.07),inset 0 1px 0 rgba(255,255,255,1);
+}
+.nav-logo{
+  font-family:'DM Serif Display',serif;
+  font-size:1.15rem;
+  color:var(--ink);
+  text-decoration:none;
+  letter-spacing:-0.02em;
+}
+.nav-logo em{color:var(--accent);font-style:normal;}
+.nav-links{
+  display:flex;
+  gap:.2rem;
+  list-style:none;
+}
+.nav-links a{
+  font-size:.8rem;
+  font-weight:400;
+  color:var(--ink2);
+  text-decoration:none;
+  padding:.35rem .75rem;
+  border-radius:50px;
+  transition:all .2s;
+}
+.nav-links a:hover{background:rgba(26,86,219,0.08);color:var(--accent)}
+.nav-cta{
+  background:var(--ink)!important;
+  color:#fff!important;
+  font-weight:500!important;
+}
+.nav-cta:hover{background:var(--accent)!important}
+
+/* ── HERO ── */
+#home{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  z-index:1;
+  padding:7rem 2rem 4rem;
+}
+.hero-wrap{
+  max-width:1100px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:3rem;
+  align-items:center;
+  width:100%;
+}
+.hero-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  font-size:.75rem;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.2rem;
+  padding:.3rem .8rem;
+  background:rgba(26,86,219,0.08);
+  border-radius:50px;
+  border:1px solid rgba(26,86,219,0.15);
+}
+.hero-eyebrow::before{
+  content:'';
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--accent2);
+  animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.8rem,5vw,4.2rem);
+  line-height:1.08;
+  letter-spacing:-0.03em;
+  color:var(--ink);
+  margin-bottom:.6rem;
+}
+h1 em{
+  font-style:italic;
+  color:var(--accent);
+}
+.hero-role{
+  font-size:1.05rem;
+  font-weight:300;
+  color:var(--ink2);
+  margin-bottom:1.4rem;
+  letter-spacing:-.01em;
+}
+.hero-desc{
+  font-size:.92rem;
+  color:var(--ink3);
+  line-height:1.75;
+  max-width:480px;
+  margin-bottom:2rem;
+}
+.hero-stats{
+  display:flex;
+  gap:2rem;
+  margin-bottom:2.2rem;
+}
+.stat{text-align:left}
+.stat-n{
+  font-family:'DM Serif Display',serif;
+  font-size:2rem;
+  line-height:1;
+  color:var(--ink);
+  letter-spacing:-0.03em;
+}
+.stat-l{
+  font-size:.7rem;
+  color:var(--ink3);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-top:.15rem;
+}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.65rem 1.4rem;
+  border-radius:50px;
+  font-size:.85rem;
+  font-weight:500;
+  text-decoration:none;
+  transition:all .22s;
+  cursor:pointer;
+  border:none;
+}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:var(--accent);transform:translateY(-1px)}
+.btn-ghost{
+  background:rgba(255,255,255,0.6);
+  color:var(--ink);
+  border:1px solid rgba(0,0,0,0.1);
+  backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.9);transform:translateY(-1px)}
+
+/* ── HERO CARD ── */
+.hero-card{
+  padding:2rem;
+  text-align:center;
+  position:relative;
+}
+.avatar{
+  width:90px;height:90px;
+  border-radius:50%;
+  margin:0 auto 1rem;
+  overflow:hidden;
+  border:3px solid rgba(255,255,255,0.9);
+  box-shadow:0 4px 20px rgba(26,86,219,0.2);
+  background:linear-gradient(135deg,var(--accent),#5850ec);
+  display:flex;align-items:center;justify-content:center;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.avatar-fallback{
+  font-family:'DM Serif Display',serif;
+  font-size:1.8rem;color:#fff;
+}
+.card-name{
+  font-family:'DM Serif Display',serif;
+  font-size:1.2rem;
+  letter-spacing:-.02em;
+  margin-bottom:.2rem;
+}
+.card-role{
+  font-size:.78rem;
+  color:var(--ink3);
+  margin-bottom:1.2rem;
+}
+.card-info{
+  list-style:none;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+  border-top:1px solid rgba(0,0,0,0.06);
+  padding-top:1rem;
+}
+.card-info li{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-size:.78rem;
+  color:var(--ink2);
+}
+.card-info li svg{flex-shrink:0;opacity:.5}
+.card-info a{color:var(--ink2);text-decoration:none}
+.card-info a:hover{color:var(--accent)}
+.card-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  font-size:.7rem;
+  font-weight:500;
+  color:var(--accent2);
+  background:rgba(14,159,110,0.09);
+  border:1px solid rgba(14,159,110,0.2);
+  padding:.25rem .65rem;
+  border-radius:50px;
+  margin-top:.8rem;
+}
+.card-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent2);animation:blink 2s infinite}
+
+/* ── SECTIONS ── */
+section{padding:5rem 2rem;position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto}
+.sec-tag{
+  display:inline-block;
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:.6rem;
+}
+h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.8rem,3vw,2.6rem);
+  letter-spacing:-.03em;
+  line-height:1.15;
+  margin-bottom:.5rem;
+}
+.sec-sub{font-size:.9rem;color:var(--ink3);margin-bottom:3rem}
+
+/* ── ABOUT ── */
+#about{background:transparent}
+.about-grid{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:2.5rem;
+  align-items:start;
+}
+.about-side{display:flex;flex-direction:column;gap:1.2rem}
+.glass-card{padding:1.5rem}
+.glass-card h4{
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:.9rem;
+}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{
+  font-size:.73rem;
+  padding:.28rem .65rem;
+  border-radius:50px;
+  background:rgba(26,86,219,0.07);
+  color:var(--accent);
+  border:1px solid rgba(26,86,219,0.12);
+  transition:.2s;cursor:default;
+}
+.tag:hover{background:rgba(26,86,219,0.14)}
+.about-text p{
+  font-size:.92rem;
+  color:var(--ink2);
+  line-height:1.8;
+  margin-bottom:1rem;
+}
+.about-text p strong{color:var(--ink);font-weight:500}
+.highlights{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.75rem;
+  margin-top:1.5rem;
+}
+.hl{
+  padding:1.1rem;
+  border-radius:var(--r-sm);
+  background:rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.8);
+  backdrop-filter:blur(10px);
+  transition:.2s;
+}
+.hl:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.hl-icon{
+  width:32px;height:32px;
+  border-radius:8px;
+  background:rgba(26,86,219,0.09);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:.6rem;
+}
+.hl h5{font-size:.8rem;font-weight:500;margin-bottom:.2rem;color:var(--ink)}
+.hl p{font-size:.73rem;color:var(--ink3)}
+
+/* ── EXPERIENCE ── */
+#experience{background:transparent}
+.timeline{display:flex;flex-direction:column;gap:1.2rem}
+.tl-item{
+  padding:1.6rem;
+  position:relative;
+  transition:.22s;
+  cursor:default;
+}
+.tl-item:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+.tl-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:1rem;
+  margin-bottom:.5rem;
+}
+.tl-left{flex:1;min-width:0}
+.tl-right{flex-shrink:0;padding-top:.15rem}
+.tl-company{
+  font-family:'DM Serif Display',serif;
+  font-size:1.05rem;
+  letter-spacing:-.02em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.tl-role{font-size:.82rem;color:var(--accent);font-weight:500;margin-bottom:.2rem}
+.tl-loc{font-size:.75rem;color:var(--ink3);margin-bottom:.9rem;display:flex;align-items:center;gap:.3rem}
+.period-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  font-size:.72rem;
+  font-weight:500;
+  padding:.28rem .8rem;
+  border-radius:50px;
+  background:rgba(26,86,219,0.07);
+  color:var(--accent);
+  border:1px solid rgba(26,86,219,0.12);
+  white-space:nowrap;
+}
+.active-pill{
+  background:rgba(14,159,110,0.08);
+  color:var(--accent2);
+  border-color:rgba(14,159,110,0.2);
+}
+.active-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent2);flex-shrink:0;animation:blink 2s infinite}
+.tl-tasks{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+  margin-bottom:1rem;
+}
+.tl-tasks li{
+  font-size:.82rem;
+  color:var(--ink2);
+  padding-left:1rem;
+  position:relative;
+  line-height:1.6;
+}
+.tl-tasks li::before{
+  content:'';
+  position:absolute;left:0;top:.5em;
+  width:4px;height:4px;
+  border-radius:50%;
+  background:var(--accent);
+  opacity:.5;
+}
+.chip-row{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{
+  font-size:.7rem;
+  padding:.2rem .6rem;
+  border-radius:6px;
+  background:rgba(0,0,0,0.04);
+  color:var(--ink3);
+  border:1px solid rgba(0,0,0,0.06);
 }
 
-        .about-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #60a5fa;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .contact-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-        }
-
-        .contact-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .contact-list li i {
-            color: #60a5fa;
-            width: 18px;
-            flex-shrink: 0;
-        }
-
-        .contact-list li a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-            word-break: break-all;
-        }
-
-        .contact-list li a:hover {
-            color: #60a5fa;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .social-btn:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(10,102,194,0.4);
-        }
-
-        .about-content h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        .about-content p {
-            color: var(--text-light);
-            line-height: 1.9;
-            margin-bottom: 1.2rem;
-            font-size: 0.95rem;
-        }
-
-        .about-highlights {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .highlight-item {
-            background: var(--bg);
-            border-radius: 12px;
-            padding: 1.2rem;
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s;
-        }
-
-        .highlight-item:hover {
-            transform: translateX(4px);
-            box-shadow: var(--card-shadow);
-        }
-
-        .highlight-item i {
-            color: var(--primary);
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .highlight-item h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.3rem;
-        }
-
-        .highlight-item p {
-            font-size: 0.78rem;
-            color: var(--text-light);
-            margin: 0;
-        }
-
-        /* ===== EXPERIENCE SECTION ===== */
-        #experience {
-            background: var(--bg);
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--primary), var(--secondary), transparent);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2.5rem;
-            padding-left: 2rem;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -2.55rem;
-            top: 0.3rem;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--gradient);
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px var(--primary);
-            z-index: 1;
-        }
-
-        .timeline-dot.active {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 3px var(--primary); }
-            50% { box-shadow: 0 0 0 6px rgba(10,102,194,0.2); }
-            100% { box-shadow: 0 0 0 3px var(--primary); }
-        }
-
-        .timeline-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.8rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .timeline-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--hover-shadow);
-            border-color: rgba(10,102,194,0.2);
-        }
-
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.8rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .timeline-company {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .timeline-period {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .timeline-role {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .timeline-location {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            color: var(--text-light);
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .timeline-tasks {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .timeline-tasks li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.7rem;
-            font-size: 0.85rem;
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        .timeline-tasks li::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--primary);
-            flex-shrink: 0;
-            margin-top: 0.5rem;
-        }
-
-        .current-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: #dcfce7;
-            color: #16a34a;
-            padding: 0.2rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-
-        .current-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #16a34a;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* ===== EDUCATION SECTION ===== */
-        #education {
-            background: white;
-        }
-
-        .edu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .edu-card {
-            background: var(--bg);
-            border-radius: 16px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .edu-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient);
-        }
-
-        .edu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--hover-shadow);
-            border-color: rgba(10,102,194,0.2);
-        }
-
-        .edu-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.3rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .edu-degree {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.3rem;
-        }
-
-        .edu-university {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .edu-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .edu-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.78rem;
-            color: var(--text-light);
-        }
-
-        .edu-gpa {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .edu-courses {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .course-tag {
-            background: white;
-            border: 1px solid var(--border);
-            color: var(--text-light);
-            padding: 0.2rem 0.6rem;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            transition: all 0.3s;
-        }
-
-        .course-tag:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        /* ===== SKILLS SECTION ===== */
-        #skills {
-            background: var(--bg);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .skill-category {
-            background: white;
-            border-radius: 16px;
-            padding: 1.8rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--hover-shadow);
-        }
-
-        .skill-cat-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-cat-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        .skill-cat-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .skill-items {
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-        }
-
-        .skill-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .skill-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .skill-name {
-            font-size: 0.83rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .skill-level {
-            font-size: 0.75rem;
-            color: var(--text-light);
-        }
-
-        .skill-bar {
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .skill-fill {
-            height: 100%;
-            background: var(--gradient);
-            border-radius: 3px;
-            transition: width 1.5s ease;
-            width: 0;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .skill-tag {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            cursor: default;
-        }
-
-        .skill-tag:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        /* ===== CERTIFICATION SECTION ===== */
-        #certifications {
-            background: white;
-        }
-
-        .cert-grid {
-            display: grid;
-            ```html
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .cert-card {
-            background: var(--bg);
-            border-radius: 16px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            gap: 1.2rem;
-            align-items: flex-start;
-        }
-
-        .cert-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .cert-card:hover::after {
-            transform: scaleX(1);
-        }
-
-        .cert-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--hover-shadow);
-            border-color: rgba(10,102,194,0.2);
-        }
-
-        .cert-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-        }
-
-        .cert-body {
-            flex: 1;
-        }
-
-        .cert-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.3rem;
-            line-height: 1.4;
-        }
-
-        .cert-issuer {
-            color: var(--primary);
-            font-size: 0.82rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .cert-period {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.25rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.73rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-        }
-
-        .cert-competencies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .cert-comp-tag {
-            background: white;
-            border: 1px solid var(--border);
-            color: var(--text-light);
-            padding: 0.2rem 0.6rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            transition: all 0.3s;
-        }
-
-        .cert-comp-tag:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        /* ===== INTERESTS SECTION ===== */
-        #interests {
-            background: var(--gradient-dark);
-            position: relative;
-            overflow: hidden;
-        }
-
-        #interests::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(10,102,194,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(10,102,194,0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-
-        #interests .section-tag {
-            background: rgba(10,102,194,0.3);
-            color: #60a5fa;
-        }
-
-        #interests .section-title {
-            color: white;
-        }
-
-        #interests .section-divider {
-            background: linear-gradient(135deg, #60a5fa, #00a0dc);
-        }
-
-        .interests-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .interest-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 1.8rem 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            cursor: default;
-        }
-
-        .interest-card:hover {
-            background: rgba(10,102,194,0.2);
-            border-color: rgba(10,102,194,0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .interest-icon {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .interest-name {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        /* ===== CONTACT SECTION ===== */
-        #contact {
-            background: var(--bg);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-
-        .contact-info h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        .contact-info p {
-            color: var(--text-light);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .contact-items {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.2rem;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .contact-item:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(10,102,194,0.1);
-            transform: translateX(4px);
-        }
-
-        .contact-item-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .contact-item-info {
-            flex: 1;
-        }
-
-        .contact-item-label {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .contact-item-value {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .contact-form {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border);
-        }
-
-        .contact-form h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.88rem;
-            color: var(--text);
-            background: var(--bg);
-            transition: all 0.3s;
-            outline: none;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(10,102,194,0.1);
-            background: white;
-        }
-
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 0.9rem;
-            background: var(--gradient);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(10,102,194,0.4);
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            background: var(--gradient-dark);
-            color: rgba(255,255,255,0.7);
-            padding: 3rem 2rem 1.5rem;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-top {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .footer-brand h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-brand p {
-            font-size: 0.85rem;
-            line-height: 1.8;
-            margin-bottom: 1.2rem;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 0.8rem;
-        }
-
-        .footer-social a {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .footer-social a:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .footer-col h4 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .footer-links a {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-size: 0.83rem;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .footer-links a:hover {
-            color: #60a5fa;
-        }
-
-        .footer-links a::before {
-            content: '›';
-            color: var(--primary);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .footer-bottom p {
-            font-size: 0.8rem;
-        }
-
-        .footer-bottom span {
-            color: #60a5fa;
-            font-weight: 600;
-        }
-
-        /* ===== SCROLL TO TOP ===== */
-        .scroll-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            background: var(--gradient);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(10,102,194,0.4);
-            transition: all 0.3s;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(10,102,194,0.5);
-        }
-
-        /* ===== ANIMATIONS ===== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .fade-in-left {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .fade-in-right {
-            opacity: 0;
-            transform: translateX(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .hero-visual {
-                display: none;
-            }
-
-            .hero-stats {
-                justify-content: center
-```html
-            ;
-        }
-
-        .hero-buttons {
-            justify-content: center;
-        }
-
-        .about-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .about-sidebar {
-            position: static;
-        }
-
-        .footer-top {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .nav-links {
-            display: none;
-            position: fixed;
-            top: 65px;
-            left: 0;
-            right: 0;
-            background: white;
-            flex-direction: column;
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            gap: 0.3rem;
-        }
-
-        .nav-links.open {
-            display: flex;
-        }
-
-        .nav-links a {
-            padding: 0.7rem 1rem;
-            border-radius: 8px;
-        }
-
-        .hamburger {
-            display: flex;
-        }
-
-        .hero-title {
-            font-size: 2.2rem;
-        }
-
-        .hero-stats {
-            gap: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-        }
-
-        .about-highlights {
-            grid-template-columns: 1fr;
-        }
-
-        .contact-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-
-        .footer-top {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .footer-bottom {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .timeline {
-            padding-left: 1.5rem;
-        }
-
-        .timeline-item {
-            padding-left: 1.5rem;
-        }
-
-        .timeline-dot {
-            left: -2.1rem;
-        }
-
-        .timeline-header {
-            flex-direction: column;
-        }
-
-        .edu-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .cert-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .interests-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 480px) {
-        section {
-            padding: 3.5rem 1.2rem;
-        }
-
-        .hero-title {
-            font-size: 1.8rem;
-        }
-
-        .hero-stats {
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .interests-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .skills-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-/* ===== FIX OVERLAP ABOUT SECTION ===== */
-@media (max-width: 1024px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .about-sidebar {
-        position: static !important;
-        top: auto !important;
-    }
-
-    .about-card {
-        margin-bottom: 1rem;
-    }
+/* ── EDUCATION ── */
+#education{background:transparent}
+.edu-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;
+}
+.edu-card{
+  padding:1.6rem;
+  transition:.22s;cursor:default;
+  position:relative;overflow:hidden;
+}
+.edu-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+.edu-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),rgba(26,86,219,0));
+}
+.edu-icon{
+  width:40px;height:40px;
+  border-radius:10px;
+  background:rgba(26,86,219,0.08);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1rem;
+}
+.edu-deg{
+  font-family:'DM Serif Display',serif;
+  font-size:.95rem;
+  letter-spacing:-.01em;
+  margin-bottom:.3rem;
+}
+.edu-uni{font-size:.78rem;color:var(--accent);font-weight:500;margin-bottom:.5rem}
+.edu-meta{
+  display:flex;gap:.8rem;
+  font-size:.72rem;color:var(--ink3);
+  margin-bottom:.6rem;
+  flex-wrap:wrap;
+}
+.gpa{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.75rem;font-weight:500;
+  color:var(--accent2);
+  background:rgba(14,159,110,0.08);
+  border:1px solid rgba(14,159,110,0.15);
+  padding:.2rem .6rem;border-radius:50px;
+  margin-bottom:.8rem;
+}
+.course-tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.course{
+  font-size:.68rem;
+  padding:.18rem .5rem;
+  border-radius:5px;
+  background:rgba(255,255,255,0.6);
+  border:1px solid rgba(0,0,0,0.07);
+  color:var(--ink2);
 }
 
-@media (max-width: 768px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .about-sidebar {
-        position: static !important;
-    }
-
-    .about-highlights {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
-
-    #about {
-        padding: 3rem 1.2rem;
-    }
+/* ── SKILLS ── */
+#skills{background:transparent}
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;
 }
-    </style>
+.skill-card{padding:1.4rem;transition:.22s;cursor:default}
+.skill-card:hover{transform:translateY(-2px)}
+.sk-head{display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem}
+.sk-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:rgba(26,86,219,0.08);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.sk-title{font-size:.82rem;font-weight:500;color:var(--ink)}
+.skill-bars{display:flex;flex-direction:column;gap:.8rem}
+.si{display:flex;flex-direction:column;gap:.3rem}
+.si-info{display:flex;justify-content:space-between}
+.si-name{font-size:.78rem;color:var(--ink2)}
+.si-lvl{font-size:.7rem;color:var(--ink3)}
+.bar{height:4px;background:rgba(0,0,0,0.06);border-radius:2px;overflow:hidden}
+.bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),#5850ec);
+  border-radius:2px;
+  width:0;
+  transition:width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.soft-tags,.plan-tags{margin-top:.3rem}
+
+/* ── CERTS ── */
+#certifications{background:transparent}
+.cert-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1.2rem;
+}
+.cert-card{
+  padding:1.5rem;
+  display:flex;gap:1.1rem;
+  align-items:flex-start;
+  transition:.22s;cursor:default;
+}
+.cert-card:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(0,0,0,0.1)}
+.cert-icon{
+  width:46px;height:46px;border-radius:12px;
+  background:rgba(26,86,219,0.08);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.cert-body{}
+.cert-title{font-size:.88rem;font-weight:500;line-height:1.4;margin-bottom:.3rem;color:var(--ink)}
+.cert-issuer{font-size:.75rem;color:var(--accent);font-weight:500;margin-bottom:.4rem}
+.cert-comps{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem}
+.comp{
+  font-size:.67rem;
+  padding:.16rem .5rem;
+  border-radius:5px;
+  background:rgba(255,255,255,0.6);
+  border:1px solid rgba(0,0,0,0.07);
+  color:var(--ink3);
+}
+
+/* ── CONTACT ── */
+#contact{background:transparent;padding-bottom:6rem}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2.5rem;
+  align-items:start;
+}
+.contact-items{display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem}
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:.9rem;
+  padding:.9rem 1.1rem;
+  border-radius:var(--r-sm);
+  background:rgba(255,255,255,0.55);
+  border:1px solid rgba(255,255,255,0.8);
+  backdrop-filter:blur(10px);
+  text-decoration:none;
+  transition:.2s;
+}
+.contact-item:hover{
+  background:rgba(255,255,255,0.8);
+  transform:translateX(4px);
+  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+.ci-icon{
+  width:38px;height:38px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.ci-icon.blue{background:rgba(26,86,219,0.1)}
+.ci-icon.green{background:rgba(14,159,110,0.1)}
+.ci-icon.orange{background:rgba(245,158,11,0.1)}
+.ci-label{font-size:.7rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em}
+.ci-val{font-size:.83rem;font-weight:500;color:var(--ink)}
+.contact-form-wrap{padding:2rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.75rem;font-weight:500;color:var(--ink2);margin-bottom:.4rem}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;
+  padding:.65rem .9rem;
+  border-radius:var(--r-sm);
+  border:1px solid rgba(0,0,0,0.1);
+  background:rgba(255,255,255,0.6);
+  font-family:'DM Sans',sans-serif;
+  font-size:.84rem;
+  color:var(--ink);
+  outline:none;
+  transition:.2s;
+  backdrop-filter:blur(6px);
+}
+.form-group input:focus,.form-group textarea:focus{
+  border-color:var(--accent);
+  background:rgba(255,255,255,0.9);
+  box-shadow:0 0 0 3px rgba(26,86,219,0.08);
+}
+.form-group textarea{height:110px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.btn-submit{
+  width:100%;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.75rem;
+  background:var(--ink);
+  color:#fff;
+  border:none;
+  border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif;
+  font-size:.86rem;
+  font-weight:500;
+  cursor:pointer;
+  transition:.22s;
+}
+.btn-submit:hover{background:var(--accent);transform:translateY(-1px)}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);
+  color:rgba(255,255,255,0.5);
+  padding:2rem;
+  text-align:center;
+  position:relative;z-index:1;
+}
+footer a{color:rgba(255,255,255,0.4);text-decoration:none}
+footer strong{color:rgba(255,255,255,0.85);font-weight:400}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-social{display:flex;gap:.5rem}
+.footer-social a{
+  width:32px;height:32px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  transition:.2s;
+}
+.footer-social a:hover{background:rgba(26,86,219,0.5)}
+
+/* ── SCROLL TOP ── */
+.scroll-top{
+  position:fixed;
+  bottom:1.5rem;right:1.5rem;
+  width:40px;height:40px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.9);
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  z-index:90;
+  opacity:0;
+  transform:translateY(8px);
+  transition:.25s;
+}
+.scroll-top.show{opacity:1;transform:translateY(0)}
+.scroll-top:hover{background:rgba(255,255,255,0.95)}
+
+/* ── ANIMATIONS ── */
+.reveal{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .55s ease,transform .55s ease;
+}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-wrap{grid-template-columns:1fr;max-width:580px;text-align:center}
+  .hero-desc,.hero-eyebrow{margin-left:auto;margin-right:auto}
+  .hero-stats{justify-content:center}
+  .hero-btns{justify-content:center}
+  .hero-card{display:none}
+  .about-grid{grid-template-columns:1fr}
+  .edu-grid{grid-template-columns:1fr 1fr}
+  .skills-grid{grid-template-columns:1fr 1fr}
+  .cert-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .nav-links li:not(:last-child){display:none}
+}
+@media(max-width:600px){
+  .edu-grid,.skills-grid{grid-template-columns:1fr}
+  .highlights{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .nav-links{display:none}
+  h1{font-size:2.2rem}
+}
+
+/* ── FLOATING OTO BADGE ── */
+.oto-badge{
+  position:fixed;
+  bottom:1.5rem;
+  left:1.5rem;
+  z-index:90;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  padding:.5rem 1rem .5rem .65rem;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(14,159,110,0.25);
+  border-radius:50px;
+  box-shadow:0 4px 20px rgba(14,159,110,0.12),inset 0 1px 0 rgba(255,255,255,0.9);
+  cursor:default;
+  animation:oto-float 4s ease-in-out infinite;
+  transition:box-shadow .25s,transform .25s;
+}
+.oto-badge:hover{
+  box-shadow:0 8px 28px rgba(14,159,110,0.2),inset 0 1px 0 rgba(255,255,255,0.9);
+  transform:translateY(-2px);
+}
+.oto-dot{
+  width:28px;height:28px;
+  border-radius:50%;
+  background:rgba(14,159,110,0.12);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.oto-dot-inner{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--accent2);
+  animation:oto-pulse 2s ease-in-out infinite;
+  box-shadow:0 0 0 0 rgba(14,159,110,0.4);
+}
+.oto-text{
+  display:flex;flex-direction:column;
+  line-height:1.2;
+}
+.oto-label{font-size:.65rem;color:var(--ink3);font-weight:400}
+.oto-value{font-size:.78rem;color:var(--accent2);font-weight:500}
+@keyframes oto-float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+@keyframes oto-pulse{
+  0%{box-shadow:0 0 0 0 rgba(14,159,110,0.5)}
+  70%{box-shadow:0 0 0 7px rgba(14,159,110,0)}
+  100%{box-shadow:0 0 0 0 rgba(14,159,110,0)}
+}
+@media(max-width:600px){
+  .oto-badge{bottom:4.5rem;left:1rem}
+}
+</style>
 </head>
 <body>
 
-    <!-- ===== NAVBAR ===== -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">Joko<span>.</span>GIS</a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#about">Tentang</a></li>
-                <li><a href="#experience">Pengalaman</a></li>
-                <li><a href="#education">Pendidikan</a></li>
-                <li><a href="#skills">Keahlian</a></li>
-                <li><a href="#certifications">Sertifikasi</a></li>
-                <li><a href="#contact" class="nav-cta">Hubungi Saya</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ===== HERO SECTION ===== -->
-    <section class="hero" id="home">
-        <div class="hero-grid"></div>
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-map-marked-alt"></i>
-                    GIS Analyst & Spatial Data Expert
-                </div>
-                <h1 class="hero-title">
-                    Joko <span class="highlight">Prasetyo</span>
-                </h1>
-                <p class="hero-subtitle">S.Geo — Geographic Information Systems Analyst</p>
-                <p class="hero-degree">
-                    <i class="fas fa-map-pin" style="color: #60a5fa; margin-right: 0.4rem;"></i>
-                    Kab. Semarang, Jawa Tengah, Indonesia
-                </p>
-                <p class="hero-description">
-                    Profesional GIS berpengalaman dengan keahlian dalam analisis data spasial, 
-                    pengembangan WebGIS, pemetaan digital, dan perencanaan tata ruang. 
-                    Bersertifikat BNSP Level 6 sebagai Analis Sistem Informasi Geografis dengan 
-                    rekam jejak proyek di berbagai instansi pemerintah dan swasta di Indonesia.
-                </p>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-number">4+</span>
-                        <span class="stat-label">Tahun Pengalaman</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">10+</span>
-                        <span class="stat-label">Proyek Selesai</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">10+</span>
-                        <span class="stat-label">Tools Dikuasai</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">3</span>
-                        <span class="stat-label">Gelar Akademik</span>
-                    </div>
-                </div>
-                <div class="hero-buttons">
-                    <a href="#experience" class="btn-primary">
-                        <i class="fas fa-briefcase"></i>
-                        Lihat Pengalaman
-                    </a>
-                    <a href="#contact" class="btn-secondary">
-                        <i class="fas fa-envelope"></i>
-                        Hubungi Saya
-                    </a>
-                    <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" class="btn-secondary">
-                        <i class="fab fa-linkedin"></i>
-                        LinkedIn
-                    </a>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="profile-card">
-                    <div class="floating-badge badge-1">
-                        <i class="fas fa-certificate" style="color: var(--accent);"></i>
-                        BNSP Certified
-                    </div>
-                    <div class="profile-avatar">
-    <img 
-        src="https://drive.google.com/thumbnail?id=14R28eyhk-nGKjFLfM_YS-xf1_s-D_00h&sz=w400"
-        alt="Joko Prasetyo"
-        style="width:100%; height:100%; object-fit:cover; object-position:center top; border-radius:50%; display:block;"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-    >
-    <span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:3rem; color:white; font-weight:700;">JP</span>
-</div>
-                    <div class="profile-name">Joko Prasetyo</div>
-                    <div class="profile-role">GIS Analyst · S.Geo</div>
-                    <ul class="profile-info-list">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            Kab. Semarang, Indonesia
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            +62 851 1718 7050
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:jokoprasetyo.gis@gmail.com">jokoprasetyo.gis@gmail.com</a>
-                        </li>
-                        <li>
-                            <i class="fab fa-linkedin"></i>
-                            <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank">linkedin.com/in/jokoprasetyoid</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-circle" style="color: #16a34a; font-size: 0.5rem;"></i>
-                            <span style="color: #16a34a; font-weight: 600;">Open to Opportunities</span>
-                        </li>
-                    </ul>
-                    <div class="floating-badge badge-2">
-                        <i class="fas fa-globe" style="color: #10b981;"></i>
-                        GIS Analyst
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== ABOUT SECTION ===== -->
-    <section id="about">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Tentang Saya</span>
-                <h2 class="section-title">Kenali Lebih Dekat</h2>
-                <div class="section-divider"></div>
-            </div>
-            <div class="about-grid">
-                <div class="about-sidebar fade-in-left">
-                    <div class="about-card">
-                        <h3><i class="fas fa-address-card"></i> Informasi Kontak</h3>
-                        <ul class="contact-list">
-                            <li>
-                                <i class="fas fa-map-marker-alt"></i>
-                                Kab. Semarang, Jawa Tengah
-                            </li>
-                            <li>
-                                <i class="fas fa-phone"></i>
-                                <a href="tel:+6285117187050">+62 851 1718 7050</a>
-                            </li>
-                            <li>
-                                <i class="fas fa-envelope"></i>
-                                <a href="mailto:jokoprasetyo.gis@gmail.com">jokoprasetyo.gis@gmail.com</a>
-                            </li>
-                            <li>
-                                <i class="fab fa-linkedin"></i>
-                                <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank">linkedin.com/in/jokoprasetyoid</a>
-                            </li>
-                        </ul>
-                        <div class="social-links">
-                            <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" class="social-btn" title="LinkedIn">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                            <a href="mailto:jokoprasetyo.gis@gmail.com" class="social-btn" title="Email">
-                                <i class="fas fa-envelope"></i>
-                            </a>
-                            <a href="tel:+6285117187050" class="social-btn" title="Phone">
-                                <i class="fas fa-phone"></i>
-                            </a>
-                            <a href="https://wa.me/6285117187050" target="_blank" class="social-btn" title="WhatsApp">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="about-card">
-                        <h3><i class="fas fa-star"></i> Keahlian Utama</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">ArcGIS</span>
-                            <span class="skill-tag">QGIS</span>
-                            <span class="skill-tag">WebGIS</span>
-                            <span class="skill-tag">Google Earth Engine</span>
-                            <span class="skill-tag">Remote Sensing</span>
-                            <span class="skill-tag">Spatial Analysis</span>
-                            <span class="skill-tag">Kartografi</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="about-content fade-in-right">
-                    <h2>GIS Analyst & Spatial Planning Expert</h2>
-                    <p>
-                        Saya adalah seorang profesional GIS yang berdedikasi dengan pengalaman lebih dari 4 tahun 
-                        dalam analisis data spasial, pengembangan WebGIS, dan perencanaan tata ruang. 
-                        Saat ini bekerja sebagai GIS Analyst di <strong>Shirvano Consulting, Yogyakarta</strong>, 
-                        saya telah terlibat dalam berbagai proyek pemetaan dan perencanaan wilayah di seluruh Indonesia.
-                    </p>
-                    <p>
-                        Dengan latar belakang akademis yang kuat dari <strong>Universitas Gadjah Mada</strong> 
-                        (D-III Penginderaan Jauh dan SIG), <strong>Universitas Muhammadiyah Surakarta</strong> 
-                        (S-1 Geografi), dan <strong>Universitas Terbuka</strong> (S-1 Ilmu Komunikasi), 
-                        saya memiliki perspektif multidisiplin yang memungkinkan saya untuk mengintegrasikan 
-                        analisis spasial dengan komunikasi yang efektif kepada para pemangku kepentingan.
-                    </p>
-                    <p>
-                        Saya telah berkontribusi dalam penyusunan RDTR di berbagai kabupaten, termasuk 
-                        Gunungkidul, Sleman, dan Kepulauan Mentawai, serta berkolaborasi dengan 
-                        Kementerian ATR/BPN dan Badan Informasi Geospasial (BIG).
-                    </p>
-
-                    <div class="about-highlights">
-                        <div class="highlight-item">
-                            <i class="fas fa-map"></i>
-                            <h4>Pemetaan Digital</h4>
-                            <p>Desain peta digital dengan berbagai sumber data geografi</p>
-                        </div>
-                        <div class="highlight-item">
-                            <i class="fas fa-globe"></i>
-                            <h4>WebGIS Development</h4>
-                            <p>Pengembangan aplikasi WebGIS berbasis JavaScript & REST API</p>
-                        </div>
-                        <div class="highlight-item">
-                            <i class="fas fa-city"></i>
-                            <h4>Tata Ruang</h4>
-                            <p>Penyusunan RDTR & RTRW bersama instansi pemerintah</p>
-                        </div>
-                        <div class="highlight-item">
-                            <i class="fas fa-satellite"></i>
-                            <h4>Remote Sensing</h4>
-                            <p>Analisis citra satelit menggunakan Google Earth Engine & ENVI</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== EXPERIENCE SECTION ===== -->
-    <section id="experience">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Karir</span>
-                <h2 class="section-title">Pengalaman Profesional</h2>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="timeline">
-
-                <!-- Shirvano
-```html
-                Consulting -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot active"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-company">
-                                    Shirvano Consulting
-                                    <span class="current-badge">Aktif</span>
-                                </div>
-                                <div class="timeline-role">
-                                    <i class="fas fa-map-marked-alt"></i>
-                                    Geographic Information Systems (GIS) Analyst
-                                </div>
-                                <div class="timeline-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Kota Yogyakarta
-                                </div>
-                            </div>
-                            <span class="timeline-period">
-                                <i class="fas fa-calendar-alt"></i>
-                                November 2021 – Sekarang
-                            </span>
-                        </div>
-                        <ul class="timeline-tasks">
-                            <li>Melakukan analisis data spasial melalui mapping software profesional</li>
-                            <li>Mendesain peta digital dengan data geografi dan berbagai sumber data pendukung</li>
-                            <li>Membuat laporan data geografis menggunakan teknik visualisasi data</li>
-                            <li>Mengelola perpustakaan digital peta geografis dalam berbagai jenis file</li>
-                            <li>Mengonversi peta fisik ke dalam bentuk digital dengan akurasi tinggi</li>
-                            <li>Melakukan pengembangan aplikasi WebGIS untuk berbagai kebutuhan</li>
-                        </ul>
-                        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            <span class="cert-comp-tag">ArcGIS</span>
-                            <span class="cert-comp-tag">QGIS</span>
-                            <span class="cert-comp-tag">WebGIS</span>
-                            <span class="cert-comp-tag">Spatial Analysis</span>
-                            <span class="cert-comp-tag">Data Visualization</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dinas Pertanahan Sleman -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-company">Dinas Pertanahan dan Tata Ruang</div>
-                                <div class="timeline-role">
-                                    <i class="fas fa-drafting-compass"></i>
-                                    Tenaga Ahli Surveyor
-                                </div>
-                                <div class="timeline-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Kab. Sleman, D.I. Yogyakarta
-                                </div>
-                            </div>
-                            <span class="timeline-period">
-                                <i class="fas fa-calendar-alt"></i>
-                                Agustus – Desember 2025
-                            </span>
-                        </div>
-                        <ul class="timeline-tasks">
-                            <li>Melaksanakan editing dan layouting laporan materi teknis perencanaan tata ruang</li>
-                            <li>Membantu tenaga ahli dalam penyusunan struktur ruang terutama terkait infrastruktur kawasan</li>
-                            <li>Mengkonfirmasi data kepada instansi/masyarakat terkait rencana pengembangan struktur ruang kawasan</li>
-                            <li>Menyusun background paper untuk penyusunan Raperbup RDTR Kawasan Sleman</li>
-                        </ul>
-                        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            <span class="cert-comp-tag">RDTR</span>
-                            <span class="cert-comp-tag">Tata Ruang</span>
-                            <span class="cert-comp-tag">Infrastruktur Kawasan</span>
-                            <span class="cert-comp-tag">Raperbup</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dinas Pertanahan Gunungkidul -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-company">Dinas Pertanahan dan Tata Ruang</div>
-                                <div class="timeline-role">
-                                    <i class="fas fa-layer-group"></i>
-                                    Tenaga Ahli Pemetaan
-                                </div>
-                                <div class="timeline-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Kab. Gunungkidul, D.I. Yogyakarta
-                                </div>
-                            </div>
-                            <span class="timeline-period">
-                                <i class="fas fa-calendar-alt"></i>
-                                April – Desember 2024
-                            </span>
-                        </div>
-                        <ul class="timeline-tasks">
-                            <li>Melakukan penyempurnaan dan pemutakhiran substansi muatan RDTR Pantai Selatan Bagian Timur sesuai pedoman terkini</li>
-                            <li>Melakukan penyesuaian substansi Materi Teknis, Raperkada dan Album Peta sesuai koreksi dari Kementerian ATR/BPN dan BIG</li>
-                            <li>Melaksanakan pendampingan penyelenggaraan rapat koordinasi dan konsultasi dengan para pemangku kepentingan</li>
-                            <li>Melaksanakan pendampingan Rapat Konsultasi Teknis dengan Kementerian ATR/BPN</li>
-                            <li>Menyusun kelengkapan berkas dan substansi untuk proses Permohonan Persetujuan Substansi ke Kementerian ATR/BPN</li>
-                        </ul>
-                        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            <span class="cert-comp-tag">RDTR</span>
-                            <span class="cert-comp-tag">ATR/BPN</span>
-                            <span class="cert-comp-tag">BIG</span>
-                            <span class="cert-comp-tag">Album Peta</span>
-                            <span class="cert-comp-tag">Raperkada</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dinas PU Mentawai -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-company">Dinas Pekerjaan Umum dan Penataan Ruang</div>
-                                <div class="timeline-role">
-                                    <i class="fas fa-satellite-dish"></i>
-                                    Tenaga Ahli GIS
-                                </div>
-                                <div class="timeline-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Kab. Kepulauan Mentawai, Sumatera Barat
-                                </div>
-                            </div>
-                            <span class="timeline-period">
-                                <i class="fas fa-calendar-alt"></i>
-                                Oktober – Desember 2023
-                            </span>
-                        </div>
-                        <ul class="timeline-tasks">
-                            <li>Melakukan persiapan pelaksanaan kegiatan termasuk koordinasi dengan Para Pemangku Kepentingan dan Tim Teknis</li>
-                            <li>Melakukan penelaahan dan perbaikan data peta Materi Teknis berdasarkan hasil FGD dan asistensi dengan Kementerian ATR/BPN</li>
-                            <li>Melakukan koordinasi dan sinkronisasi dengan RTRW Provinsi serta asistensi peta dengan Badan Informasi Geospasial (BIG)</li>
-                            <li>Melakukan pendampingan FGD, Konsultasi Publik, asistensi/klinik substansi RTRW secara offline maupun online</li>
-                            <li>Memberikan masukan dan melakukan verifikasi terhadap setiap pelaksanaan FGD dan konsultasi publik</li>
-                        </ul>
-                        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            <span class="cert-comp-tag">RTRW</span>
-                            <span class="cert-comp-tag">FGD</span>
-                            <span class="cert-comp-tag">Konsultasi Publik</span>
-                            <span class="cert-comp-tag">GIS Mapping</span>
-                            <span class="cert-comp-tag">BIG</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PT Esri Indonesia -->
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-company">PT. Esri Indonesia</div>
-                                <div class="timeline-role">
-                                    <i class="fas fa-laptop-code"></i>
-                                    Student Intern Solution Specialist
-                                </div>
-                                <div class="timeline-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Kota Jakarta
-                                </div>
-                            </div>
-                            <span class="timeline-period">
-                                <i class="fas fa-calendar-alt"></i>
-                                Februari – Maret 2021
-                            </span>
-                        </div>
-                        <ul class="timeline-tasks">
-                            <li>Membangun WebGIS post-disaster bencana banjir di Kalimantan Selatan</li>
-                            <li>Mengecek Portal GIS Tata Ruang di seluruh Indonesia menggunakan REST service</li>
-                            <li>Support kuesioner survei agen dan usaha tani serta dashboard untuk sosialisasi ke BRI Agro</li>
-                        </ul>
-                        <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            <span class="cert-comp-tag">ArcGIS Online</span>
-                            <span class="cert-comp-tag">WebGIS</span>
-                            <span class="cert-comp-tag">REST Service</span>
-                            <span class="cert-comp-tag">Dashboard</span>
-                            <span class="cert-comp-tag">Disaster Mapping</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== EDUCATION SECTION ===== -->
-    <section id="education">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Akademik</span>
-                <h2 class="section-title">Riwayat Pendidikan</h2>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="edu-grid">
-
-                <!-- UGM -->
-                <div class="edu-card fade-in">
-                    <div class="edu-icon">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <div class="edu-degree">D-III Penginderaan Jauh & Sistem Informasi Geografi</div>
-                    <div class="edu-university">Universitas Gadjah Mada (UGM)</div>
-                    <div class="edu-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> Kota Yogyakarta</span>
-                        <span><i class="fas fa-calendar-alt"></i> 2018 – 2021</span>
-                    </div>
-                    <div class="edu-gpa">
-                        <i class="fas fa-star"></i>
-                        IPK: 3.55 / 4.00
-                    </div>
-                    <div class="edu-courses">
-                        <span class="course-tag">Kartografi</span>
-                        <span class="course-tag">Penginderaan Jauh</span>
-                        <span class="course-tag">SIG</span>
-                        <span class="course-tag">Pemrosesan Data Spasial</span>
-                        <span class="course-tag">Pemodelan Spasial</span>
-                        <span class="course-tag">Pemrograman Dasar</span>
-                        <span class="course-tag">Basis Data</span>
-                        <span class="course-tag">Fotogrametri</span>
-                    </div>
-                </div>
-
-                <!-- UMS -->
-                <div class="edu-card fade-in">
-                    <div class="edu-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="edu-degree">S-1 Geografi (Transfer Program)</div>
-                    <div class="edu-university">Universitas Muhammadiyah Surakarta (UMS)</div>
-                    <div class="edu-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> Kota Surakarta</span>
-                        <span><i class="fas fa-calendar-alt"></i> 2022 – 2023</span>
-                    </div>
-                    <div class="edu-gpa">
-                        <i class="fas fa-star"></i>
-                        IPK: 3.49 / 4.00
-                    </div>
-                    <div class="edu-courses">
-                        <span class="course-tag">Geografi Pariwisata</span>
-                        <span class="course-tag">Geografi Kependudukan</span>
-                        <span class="course-tag">Geografi Perkotaan</span>
-                        <span class="course-tag">Geografi Politik</span>
-                        <span class="course-tag">Geografi Industri</span>
-                        <span class="course-tag">Perencanaan Pariwisata</span>
-                    </div>
-                </div>
-
-                <!-- UT -->
-                <div class="edu-card fade-in">
-                    <div class="edu-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <div class="edu-degree">S-1 Ilmu Komunikasi</div>
-                    <div class="edu-university">Universitas Terbuka</div>
-                    <div class="edu-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> Kota Yogyakarta</span>
-                        <span><i class="fas fa-calendar-alt"></i> 2019 – 2024</span>
-                    </div>
-                    <div class="edu-gpa">
-                        <i class="fas fa-star"></i>
-                        IPK: 3.07 / 4.00
-                    </div>
-                    <div class="edu-courses">
-                        <span class="course-tag">Public Speaking</span>
-                        <span class="course-tag">Komunikasi Inovasi</span>
-                        <span class="course-tag">Komunikasi Massa</span>
-                        <span class="course-tag">Komunikasi Pemasaran</span>
-                        <span class="course-tag">Komunikasi Bisnis</span>
-                        <span class="course-tag">Hubungan Masyarakat</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== SKILLS SECTION ===== -->
-    <section id="skills">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Kompetensi</span>
-                <h2 class="section-title">Keahlian & Teknologi</h2>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="skills-grid">
-
-                <!-- GIS Software -->
-                <div class="skill-category fade-in">
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon">
-                            <i class="fas fa-map"></i>
-                        </div>
-                        <div class="skill-cat-title">GIS & Mapping Software</div>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">ArcGIS Product Suite</span>
-                                <span class="skill-level">Expert</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="92"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">QGIS</span>
-                                <span class="skill-level">Expert</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="90"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Global Mapper</span>
-                                <span class="skill-level">Advanced</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="82"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">SAGA GIS</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="70"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Surfer</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="68"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Remote Sensing -->
-                <div class="skill-category fade-in">
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon">
-                            <i class="fas fa-satellite"></i>
-                        </div>
-                        <div class="skill-cat-title">Remote Sensing & Earth Observation</div>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Google Earth Engine</span>
-                                <span class="skill-level">Advanced</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="80"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">ENVI</span>
-                                <span class="skill-level">Advanced</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="78"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Google Earth Pro</span>
-                                <span class="skill-level">Expert</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="88"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Fotogrametri</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="65"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- WebGIS & Development -->
-                <div class="skill-category fade-in">
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <div class="skill-cat-title">WebGIS & Development</div>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">JavaScript / Leaflet.js</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="72"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">HTML & CSS</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="70"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">SuperMap iClient</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="65"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">REST Service / API</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="68"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">WordPress</span>
-                                <span class="skill-level">Intermediate</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="65"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Office & Productivity -->
-                <div class="skill-category fade-in">
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="skill-cat-title">Office & Productivity</div>
-                    </div>
-                    <div class="skill-items">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Microsoft PowerPoint</span>
-                                <span class="skill-level">Expert</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="90"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Microsoft Word</span>
-                                <span class="skill-level">Expert</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="88"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Microsoft Excel</span>
-                                <span class="skill-level">Advanced</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="82"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">Blender (3D)</span>
-                                <span class="skill-level">Beginner</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-fill" data-width="45"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Soft Skills -->
-                <div class="skill-category fade-in">
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="skill-cat-title">Soft Skills</div>
-                    </div>
-                    <div class="skill-tags" style="margin-top: 0.5rem;">
-                        <span class="skill-tag">Public Speaking</span>
-                        <span class="skill-tag">Time Management</span>
-                        <span class="skill-tag">Team Leadership</span>
-                        <span class="skill-tag">Stakeholder Communication</span>
-                        <span class="skill-tag">Problem Solving</span>
-                        <span class="skill-tag">Report Writing</span>
-                        <span class="skill-tag">FGD Facilitation</span>
-                        <span class="skill-tag">Project Coordination</span>
-                    </div>
-                </div>
-
-                <!-- Spatial Planning -->
-                <div class="skill-category fade-in">
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon">
-                            <i class="fas fa-city"></i>
-                        </div>
-                        <div class="skill-cat-title">Perencanaan Tata Ruang</div>
-                    </div>
-                    <div class="skill-tags" style="margin-top: 0.5rem;">
-                        <span class="skill-tag">RDTR</span>
-                        <span class="skill-tag">RTRW</span>
-                        <span class="skill-tag">Materi Teknis</span>
-                        <span class="skill-tag">Raperkada</span>
-                        <span class="skill-tag">Album Peta</span>
-                        <span class="skill-tag">ATR/BPN</span>
-                        <span class="skill-tag">Urban Planning</span>
-                        <span class="skill-tag">Disaster Mapping</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== CERTIFICATIONS SECTION ===== -->
-    <section id="certifications">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Sertifikasi & Kursus</span>
-                <h2 class="section-title">Lisensi & Sertifikasi</h2>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="cert-grid">
-
-                <!-- BNSP -->
-                <div class="cert-card fade-in">
-                    <div class="cert-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="cert-body">
-                        <div class="cert-title">Sertifikasi Kompetensi SKKNI — Analis Sistem Informasi Geografis (Level 6)</div>
-                        <div class="cert-issuer">
-                            <i class="fas fa-building"></i>
-                            Badan Nasional Sertifikasi Profesi (BNSP)
-                        </div>
-                        <div class="cert-period">
-                            <i class="fas fa-calendar-check"></i>
-                            2023 – 2026
-                        </div>
-                        <div class="cert-competencies">
-                            <span class="cert-comp-tag">Mengelola Tim Kerja</span>
-                            <span class="cert-comp-tag">Mengoperasikan Perangkat Lunak SIG</span>
-                            <span class="cert-comp-tag">Membaca Peta</span>
-                            <span class="cert-comp-tag">Merancang Basis Data Spasial</span>
-                            <span class="cert-comp-tag">Analisis SIG Dasar & Lanjut</span>
-                            <span class="cert-comp-tag">Membangun Model SIG</span>
-                            <span class="cert-comp-tag">Mengelola Data Geospasial</span>
-                            <span class="cert-comp-tag">Kontrol Kualitas SIG</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Google Earth Engine -->
-                <div class="cert-card fade-in">
-                    <div class="cert-icon">
-                        <i class="fas fa-globe-asia"></i>
-                    </div>
-                    <div class="cert-body">
-                        <div class="cert-title">Bootcamp Google Earth Engine 3.0</div>
-                        <div class="cert-issuer">
-                            <i class="fas fa-building"></i>
-                            Geocourse.id
-                        </div>
-                        <div class="cert-period">
-                            <i class="fas fa-calendar-check"></i>
-                            2022
-                        </div>
-                        <div class="cert-competencies">
-                            <span class="cert-comp-tag">Penginderaan Jauh Dasar</span>
-                            <span class="cert-comp-tag">Google Earth Dasar</span>
-                            <span class="cert-comp-tag">Aplikasi Google Earth</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- WebGIS Development -->
-                <div class="cert-card fade-in">
-                    <div class="cert-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <div class="cert-body">
-                        <div class="cert-title">WebGIS Development Bootcamp: Basic Class</div>
-                        <div class="cert-iss
-```html
-                        uer">
-                            <i class="fas fa-building"></i>
-                            Geocourse.id
-                        </div>
-                        <div class="cert-period">
-                            <i class="fas fa-calendar-check"></i>
-                            2022
-                        </div>
-                        <div class="cert-competencies">
-                            <span class="cert-comp-tag">GIS & Analisis Spasial</span>
-                            <span class="cert-comp-tag">Pengenalan Software Desktop</span>
-                            <span class="cert-comp-tag">Front-End Development</span>
-                            <span class="cert-comp-tag">JavaScript</span>
-                            <span class="cert-comp-tag">Pemetaan API</span>
-                            <span class="cert-comp-tag">WebMap Dasar</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SuperMap -->
-                <div class="cert-card fade-in">
-                    <div class="cert-icon">
-                        <i class="fas fa-map-marked-alt"></i>
-                    </div>
-                    <div class="cert-body">
-                        <div class="cert-title">SuperMap Skill Up 2.0</div>
-                        <div class="cert-issuer">
-                            <i class="fas fa-building"></i>
-                            SuperMap
-                        </div>
-                        <div class="cert-period">
-                            <i class="fas fa-calendar-check"></i>
-                            2021
-                        </div>
-                        <div class="cert-competencies">
-                            <span class="cert-comp-tag">HTML, CSS, Bootstrap</span>
-                            <span class="cert-comp-tag">SuperMap iClient JavaScript</span>
-                            <span class="cert-comp-tag">Pengembangan Fungsi</span>
-                            <span class="cert-comp-tag">3D Analysis</span>
-                            <span class="cert-comp-tag">Git Project Repository</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== INTERESTS SECTION ===== -->
-    <section id="interests">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Minat</span>
-                <h2 class="section-title">Bidang Minat & Fokus</h2>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="interests-grid">
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">🏙️</span>
-                    <div class="interest-name">Urban Planning</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">🗺️</span>
-                    <div class="interest-name">Pemetaan Bencana</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">📊</span>
-                    <div class="interest-name">Analisis Spasial</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">🎤</span>
-                    <div class="interest-name">Public Speaking</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">⏱️</span>
-                    <div class="interest-name">Time Management</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">🛰️</span>
-                    <div class="interest-name">Remote Sensing</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">🌐</span>
-                    <div class="interest-name">WebGIS Development</div>
-                </div>
-                <div class="interest-card fade-in">
-                    <span class="interest-icon">📐</span>
-                    <div class="interest-name">Tata Ruang Wilayah</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== CONTACT SECTION ===== -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-tag">Kontak</span>
-                <h2 class="section-title">Hubungi Saya</h2>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="contact-grid">
-                <div class="contact-info fade-in-left">
-                    <h3>Mari Berkolaborasi!</h3>
-                    <p>
-                        Saya terbuka untuk peluang kerja sama, proyek GIS, konsultasi tata ruang, 
-                        maupun diskusi seputar analisis spasial dan pengembangan WebGIS. 
-                        Jangan ragu untuk menghubungi saya melalui salah satu kanal berikut.
-                    </p>
-
-                    <div class="contact-items">
-                        <a href="mailto:jokoprasetyo.gis@gmail.com" class="contact-item">
-                            <div class="contact-item-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-item-info">
-                                <div class="contact-item-label">Email</div>
-                                <div class="contact-item-value">jokoprasetyo.gis@gmail.com</div>
-                            </div>
-                            <i class="fas fa-arrow-right" style="color: var(--text-light);"></i>
-                        </a>
-
-                        <a href="tel:+6285117187050" class="contact-item">
-                            <div class="contact-item-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="contact-item-info">
-                                <div class="contact-item-label">Telepon / WhatsApp</div>
-                                <div class="contact-item-value">+62 851 1718 7050</div>
-                            </div>
-                            <i class="fas fa-arrow-right" style="color: var(--text-light);"></i>
-                        </a>
-
-                        <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" class="contact-item">
-                            <div class="contact-item-icon" style="background: linear-gradient(135deg, #0077b5, #00a0dc);">
-                                <i class="fab fa-linkedin-in"></i>
-                            </div>
-                            <div class="contact-item-info">
-                                <div class="contact-item-label">LinkedIn</div>
-                                <div class="contact-item-value">linkedin.com/in/jokoprasetyoid</div>
-                            </div>
-                            <i class="fas fa-arrow-right" style="color: var(--text-light);"></i>
-                        </a>
-
-                        <a href="https://wa.me/6285117187050" target="_blank" class="contact-item">
-                            <div class="contact-item-icon" style="background: linear-gradient(135deg, #25d366, #128c7e);">
-                                <i class="fab fa-whatsapp"></i>
-                            </div>
-                            <div class="contact-item-info">
-                                <div class="contact-item-label">WhatsApp</div>
-                                <div class="contact-item-value">+62 851 1718 7050</div>
-                            </div>
-                            <i class="fas fa-arrow-right" style="color: var(--text-light);"></i>
-                        </a>
-
-                        <a href="#" class="contact-item">
-                            <div class="contact-item-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-item-info">
-                                <div class="contact-item-label">Lokasi</div>
-                                <div class="contact-item-value">Kab. Semarang, Jawa Tengah</div>
-                            </div>
-                            <i class="fas fa-arrow-right" style="color: var(--text-light);"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="contact-form fade-in-right">
-                    <h3><i class="fas fa-paper-plane" style="color: var(--primary); margin-right: 0.5rem;"></i>Kirim Pesan</h3>
-                    <form id="contactForm" onsubmit="handleSubmit(event)">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">Nama Lengkap</label>
-                                <input type="text" id="name" placeholder="Nama Anda" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" placeholder="email@anda.com" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subjek</label>
-                            <input type="text" id="subject" placeholder="Topik pesan Anda" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Pesan</label>
-                            <textarea id="message" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-submit">
-                            <i class="fas fa-paper-plane"></i>
-                            Kirim Pesan
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FOOTER ===== -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <h3>Joko Prasetyo, S.Geo</h3>
-                    <p>
-                        GIS Analyst & Spatial Planning Expert yang berdedikasi dalam 
-                        menghadirkan solusi pemetaan dan analisis spasial berkualitas tinggi 
-                        untuk mendukung pembangunan wilayah Indonesia.
-                    </p>
-                    <div class="footer-social">
-                        <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="mailto:jokoprasetyo.gis@gmail.com" title="Email">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                        <a href="https://wa.me/6285117187050" target="_blank" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <a href="tel:+6285117187050" title="Phone">
-                            <i class="fas fa-phone"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Navigasi</h4>
-                    <ul class="footer-links">
-                        <li><a href="#about">Tentang Saya</a></li>
-                        <li><a href="#experience">Pengalaman</a></li>
-                        <li><a href="#education">Pendidikan</a></li>
-                        <li><a href="#skills">Keahlian</a></li>
-                        <li><a href="#certifications">Sertifikasi</a></li>
-                        <li><a href="#contact">Kontak</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Keahlian Utama</h4>
-                    <ul class="footer-links">
-                        <li><a href="#skills">ArcGIS & QGIS</a></li>
-                        <li><a href="#skills">WebGIS Development</a></li>
-                        <li><a href="#skills">Google Earth Engine</a></li>
-                        <li><a href="#skills">Analisis Spasial</a></li>
-                        <li><a href="#skills">RDTR & RTRW</a></li>
-                        <li><a href="#skills">Remote Sensing</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>© 2025 <span>Joko Prasetyo, S.Geo</span>. All rights reserved.</p>
-                <p>Dibuat dengan <span>❤️</span> untuk dunia GIS Indonesia</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- ===== JAVASCRIPT ===== -->
-    <script>
-        // ===== HAMBURGER MENU =====
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const hamburger = document.getElementById('hamburger');
-            navLinks.classList.toggle('open');
-            hamburger.classList.toggle('active');
-        }
-
-        // Close menu when link clicked
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navLinks').classList.remove('open');
-                document.getElementById('hamburger').classList.remove('active');
-            });
-        });
-
-        // ===== NAVBAR SCROLL EFFECT =====
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
-            } else {
-                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
-            }
-
-            // Scroll to top button
-            const scrollTop = document.getElementById('scrollTop');
-            if (window.scrollY > 400) {
-                scrollTop.classList.add('visible');
-            } else {
-                scrollTop.classList.remove('visible');
-            }
-        });
-
-        // ===== SCROLL TO TOP =====
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ===== INTERSECTION OBSERVER FOR ANIMATIONS =====
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 100);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right').forEach(el => {
-            observer.observe(el);
-        });
-
-        // ===== SKILL BAR ANIMATION =====
-        const skillObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const fills = entry.target.querySelectorAll('.skill-fill');
-                    fills.forEach(fill => {
-                        const width = fill.getAttribute('data-width');
-                        setTimeout(() => {
-                            fill.style.width = width + '%';
-                        }, 300);
-                    });
-                }
-            });
-        }, { threshold: 0.3 });
-
-        document.querySelectorAll('.skill-category').forEach(el => {
-            skillObserver.observe(el);
-        });
-
-        // ===== ACTIVE NAV LINK ON SCROLL =====
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-links a');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active-nav');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active-nav');
-                }
-            });
-        });
-
-        // ===== COUNTER ANIMATION =====
-        function animateCounter(el, target, duration = 2000) {
-            let start = 0;
-            const step = target / (duration / 16);
-            const timer = setInterval(() => {
-                start += step;
-                if (start >= target) {
-                    el.textContent = target + '+';
-                    clearInterval(timer);
-                } else {
-                    el.textContent = Math.floor(start) + '+';
-                }
-            }, 16);
-        }
-
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statNumbers = entry.target.querySelectorAll('.stat-number');
-                    statNumbers.forEach(stat => {
-                        const text = stat.textContent;
-                        const num = parseInt(text);
-                        if (!isNaN(num)) {
-                            animateCounter(stat, num);
-                        }
-                    });
-                    counterObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const heroStats = document.querySelector('.hero-stats');
-        if (heroStats) counterObserver.observe(heroStats);
-
-        // ===== CONTACT FORM HANDLER =====
-        function handleSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-
-            const mailtoLink = `mailto:jokoprasetyo.gis@gmail.com?subject=${encodeURIComponent(subject + ' - dari ' + name)}&body=${encodeURIComponent('Nama: ' + name + '\nEmail: ' + email + '\n\nPesan:\n' + message)}`;
-            window.location.href = mailtoLink;
-
-            // Show success notification
-            showNotification('Pesan berhasil dikirim! Terima kasih telah menghubungi saya.', 'success');
-            document.getElementById('contactForm').reset();
-        }
-
-        // ===== NOTIFICATION =====
-        function showNotification(message, type = 'success') {
-            const existing = document.querySelector('.notification');
-            if (existing) existing.remove();
-
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                <span>${message}</span>
-            `;
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 2rem;
-                left: 50%;
-                transform: translateX(-50%) translateY(100px);
-                background: ${type === 'success' ? '#10b981' : '#ef4444'};
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                gap: 0.8rem;
-                font-size: 0.9rem;
-                font-weight: 500;
-                box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-                z-index: 9999;
-                transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-                max-width: 90vw;
-                text-align: center;
-            `;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.transform = 'translateX(-50%) translateY(0)';
-            }, 100);
-
-            setTimeout(() => {
-                notification.style.transform = 'translateX(-50%) translateY(100px)';
-                setTimeout(() => notification.remove(), 400);
-            }, 4000);
-        }
-
-        // ===== SMOOTH SCROLL FOR ALL ANCHOR LINKS =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href === '#') return;
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    const offsetTop = target.offsetTop - 65;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // ===== TYPING EFFECT FOR HERO SUBTITLE =====
-        const subtitleEl = document.querySelector('.hero-subtitle');
-        if (subtitleEl) {
-            const originalText = subtitleEl.textContent;
-            subtitleEl.textContent = '';
-            let i = 0;
-            const typeInterval = setInterval(() => {
-                subtitleEl.textContent += originalText[i];
-                i++;
-                if (i >= originalText.length) clearInterval(typeInterval);
-            }, 60);
-        }
-
-        // ===== ACTIVE NAV STYLE =====
-        const style = document.createElement('style');
-        style.textContent = `
-            .nav-links a.active-nav {
-                background: var(--primary-light);
-                color: var(--primary);
-            }
-            .hamburger.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-            .hamburger.active span:nth-child(2) {
-                opacity: 0;
-            }
-            .hamburger.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(5px, -5px);
-            }
-        `;
-        document.head.appendChild(style);
-
-        // ===== CARD TILT EFFECT =====
-        document.querySelectorAll('.timeline-card, .edu-card, .cert-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * 3;
-                const rotateY = ((x - centerX) / centerX) * 3;
-                card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateY(-3px)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-
-        // ===== PRELOADER =====
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.style.opacity = '0';
-                setTimeout(() => preloader.remove(), 500);
-            }
-        });
-
-        // ===== INIT =====
-        console.log('%c👋 Hi! I\'m Joko Prasetyo - GIS Analyst', 'color: #0a66c2; font-size: 16px; font-weight: bold;');
-        console.log('%c📧 jokoprasetyo.gis@gmail.com', 'color: #718096; font-size: 12px;');
-        console.log('%c🔗 linkedin.com/in/jokoprasetyoid', 'color: #718096; font-size: 12px;');
-    </script>
-
-    <!-- ===== PRELOADER ===== -->
-    <div id="preloader" style="
-        position: fixed;
-        inset: 0;
-        background: var(--gradient-dark);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 99999;
-        transition: opacity 0.5s ease;
-    ">
-        <div style="
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 1.5rem;
-            letter-spacing: 2px;
-        ">Joko<span style="color: #60a5fa;">.</span>GIS</div>
-        <div style="
-            width: 200px;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            overflow: hidden;
-        ">
-            <div style="
-                height: 100%;
-                background: linear-gradient(135deg, #0a66c2, #00a0dc);
-                border-radius: 2px;
-                animation: loading 1.5s ease forwards;
-            "></div>
-        </div>
-        <p style="
-            color: rgba(255,255,255,0.5);
-            font-size: 0.8rem;
-            margin-top: 1rem;
-            font-family: 'Inter', sans-serif;
-        ">GIS Analyst & Spatial Planning Expert</p>
-        <style>
-            @keyframes loading {
-                from { width: 0%; }
-                to { width: 100%; }
-            }
-        </style>
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">Joko<em>.</em>GIS</a>
+    <ul class="nav-links">
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#experience">Pengalaman</a></li>
+      <li><a href="#education">Pendidikan</a></li>
+      <li><a href="#skills">Keahlian</a></li>
+      <li><a href="#certifications">Sertifikasi</a></li>
+      <li><a href="#contact" class="nav-cta">Hubungi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-wrap">
+    <div class="hero-content">
+      <div class="hero-eyebrow">GIS Analyst &amp; Spatial Data Expert</div>
+      <h1>Joko<br><em>Prasetyo</em></h1>
+      <p class="hero-role">S.Geo — Geographic Information Systems Analyst</p>
+      <p class="hero-desc">Profesional GIS berpengalaman dalam analisis data spasial, WebGIS, dan perencanaan tata ruang. Bersertifikat BNSP Level 6 dengan rekam jejak proyek di berbagai instansi pemerintah Indonesia.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-n" data-count="4">0</div><div class="stat-l">Tahun Pengalaman</div></div>
+        <div class="stat"><div class="stat-n" data-count="10">0</div><div class="stat-l">Proyek Selesai</div></div>
+        <div class="stat"><div class="stat-n" data-count="10">0</div><div class="stat-l">Tools Dikuasai</div></div>
+        <div class="stat"><div class="stat-n" data-count="3">0</div><div class="stat-l">Gelar Akademik</div></div>
+      </div>
+      <div class="hero-btns">
+        <a href="#experience" class="btn btn-dark">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Pengalaman
+        </a>
+        <a href="#contact" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Hubungi Saya
+        </a>
+        <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" rel="noopener" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
     </div>
+    <div class="hero-card glass">
+      <div class="avatar">
+        <img src="https://drive.google.com/thumbnail?id=14R28eyhk-nGKjFLfM_YS-xf1_s-D_00h&sz=w400" alt="Joko Prasetyo" onerror="this.style.display='none';document.querySelector('.avatar-fallback').style.display='flex'">
+        <div class="avatar-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center">JP</div>
+      </div>
+      <div class="card-name">Joko Prasetyo</div>
+      <div class="card-role">GIS Analyst · S.Geo</div>
+      <ul class="card-info">
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Kab. Semarang, Indonesia
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <a href="tel:+6285117187050">+62 851 1718 7050</a>
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <a href="mailto:jokoprasetyo.gis@gmail.com">jokoprasetyo.gis@gmail.com</a>
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" rel="noopener">linkedin.com/in/jokoprasetyoid</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 
+<!-- FLOATING OPEN TO OPPORTUNITIES -->
+<div class="oto-badge">
+  <div class="oto-dot"><div class="oto-dot-inner"></div></div>
+  <div class="oto-text">
+    <span class="oto-label">Status Saat Ini</span>
+    <span class="oto-value">Open to Opportunities</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-tag">Tentang Saya</p>
+      <h2>Kenali Lebih Dekat</h2>
+      <p class="sec-sub">Multidisiplin — dari SIG hingga komunikasi spasial</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-side reveal">
+        <div class="glass glass-card">
+          <h4>Kontak</h4>
+          <ul class="card-info">
+            <li>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kab. Semarang, Jawa Tengah
+            </li>
+            <li>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+6285117187050">+62 851 1718 7050</a>
+            </li>
+            <li>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:jokoprasetyo.gis@gmail.com">jokoprasetyo.gis@gmail.com</a>
+            </li>
+            <li>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+              <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" rel="noopener">linkedin.com/in/jokoprasetyoid</a>
+            </li>
+          </ul>
+        </div>
+        <div class="glass glass-card">
+          <h4>Keahlian Utama</h4>
+          <div class="tags">
+            <span class="tag">ArcGIS</span>
+            <span class="tag">QGIS</span>
+            <span class="tag">WebGIS</span>
+            <span class="tag">Google Earth Engine</span>
+            <span class="tag">Remote Sensing</span>
+            <span class="tag">Spatial Analysis</span>
+            <span class="tag">RDTR</span>
+            <span class="tag">RTRW</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <p>Saya adalah seorang profesional GIS yang berdedikasi dengan pengalaman lebih dari <strong>4 tahun</strong> dalam analisis data spasial, pengembangan WebGIS, dan perencanaan tata ruang. Saat ini bekerja sebagai GIS Analyst di <strong>Shirvano Consulting, Yogyakarta</strong>.</p>
+        <p>Dengan latar belakang dari <strong>Universitas Gadjah Mada</strong> (D-III Penginderaan Jauh dan SIG), <strong>Universitas Muhammadiyah Surakarta</strong> (S-1 Geografi), dan <strong>Universitas Terbuka</strong> (S-1 Ilmu Komunikasi), saya memiliki perspektif multidisiplin yang langka.</p>
+        <p>Telah berkontribusi dalam penyusunan RDTR di berbagai kabupaten — Gunungkidul, Sleman, dan Kepulauan Mentawai — berkolaborasi dengan Kementerian ATR/BPN dan Badan Informasi Geospasial (BIG).</p>
+        <div class="highlights">
+          <div class="hl">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            </div>
+            <h5>Pemetaan Digital</h5>
+            <p>Desain peta profesional dari berbagai sumber data geografi</p>
+          </div>
+          <div class="hl">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h5>WebGIS Development</h5>
+            <p>Aplikasi WebGIS berbasis JavaScript &amp; REST API</p>
+          </div>
+          <div class="hl">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h5>Tata Ruang</h5>
+            <p>Penyusunan RDTR &amp; RTRW bersama instansi pemerintah</p>
+          </div>
+          <div class="hl">
+            <div class="hl-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h5>Remote Sensing</h5>
+            <p>Analisis citra satelit via Google Earth Engine &amp; ENVI</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-tag">Karir</p>
+      <h2>Pengalaman Profesional</h2>
+      <p class="sec-sub">4+ tahun membangun solusi spasial di berbagai instansi</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item glass reveal">
+        <div class="tl-top">
+          <div class="tl-left">
+            <div class="tl-company">Shirvano Consulting</div>
+            <div class="tl-role">GIS Analyst</div>
+            <div class="tl-loc">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kota Yogyakarta
+            </div>
+          </div>
+          <div class="tl-right"><span class="period-pill active-pill">Nov 2021 – Sekarang</span></div>
+        </div>
+        <ul class="tl-tasks">
+          <li>Analisis data spasial menggunakan mapping software profesional</li>
+          <li>Desain peta digital dari berbagai sumber data geografi</li>
+          <li>Membuat laporan geografis dengan teknik visualisasi data</li>
+          <li>Mengelola perpustakaan digital peta dalam berbagai format file</li>
+          <li>Pengembangan aplikasi WebGIS untuk berbagai kebutuhan klien</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">ArcGIS</span><span class="chip">QGIS</span><span class="chip">WebGIS</span><span class="chip">Spatial Analysis</span><span class="chip">Data Visualization</span>
+        </div>
+      </div>
+
+      <div class="tl-item glass reveal">
+        <div class="tl-top">
+          <div class="tl-left">
+            <div class="tl-company">Dinas Pertanahan dan Tata Ruang</div>
+            <div class="tl-role">Tenaga Ahli Surveyor</div>
+            <div class="tl-loc">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kab. Sleman, D.I. Yogyakarta
+            </div>
+          </div>
+          <div class="tl-right"><span class="period-pill">Agu – Des 2025</span></div>
+        </div>
+        <ul class="tl-tasks">
+          <li>Editing dan layouting laporan materi teknis perencanaan tata ruang</li>
+          <li>Membantu penyusunan struktur ruang terkait infrastruktur kawasan</li>
+          <li>Konfirmasi data kepada instansi/masyarakat terkait rencana pengembangan</li>
+          <li>Menyusun background paper untuk Raperbup RDTR Kawasan Sleman</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">RDTR</span><span class="chip">Tata Ruang</span><span class="chip">Infrastruktur Kawasan</span><span class="chip">Raperbup</span>
+        </div>
+      </div>
+
+      <div class="tl-item glass reveal">
+        <div class="tl-top">
+          <div class="tl-left">
+            <div class="tl-company">Dinas Pertanahan dan Tata Ruang</div>
+            <div class="tl-role">Tenaga Ahli Pemetaan</div>
+            <div class="tl-loc">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kab. Gunungkidul, D.I. Yogyakarta
+            </div>
+          </div>
+          <div class="tl-right"><span class="period-pill">Apr – Des 2024</span></div>
+        </div>
+        <ul class="tl-tasks">
+          <li>Penyempurnaan substansi RDTR Pantai Selatan Bagian Timur sesuai pedoman terkini</li>
+          <li>Penyesuaian Materi Teknis, Raperkada dan Album Peta sesuai koreksi ATR/BPN &amp; BIG</li>
+          <li>Pendampingan rapat koordinasi dengan para pemangku kepentingan</li>
+          <li>Penyusunan berkas Permohonan Persetujuan Substansi ke Kementerian ATR/BPN</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">RDTR</span><span class="chip">ATR/BPN</span><span class="chip">BIG</span><span class="chip">Album Peta</span><span class="chip">Raperkada</span>
+        </div>
+      </div>
+
+      <div class="tl-item glass reveal">
+        <div class="tl-top">
+          <div class="tl-left">
+            <div class="tl-company">Dinas PU dan Penataan Ruang</div>
+            <div class="tl-role">Tenaga Ahli GIS</div>
+            <div class="tl-loc">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kab. Kepulauan Mentawai, Sumatera Barat
+            </div>
+          </div>
+          <div class="tl-right"><span class="period-pill">Okt – Des 2023</span></div>
+        </div>
+        <ul class="tl-tasks">
+          <li>Penelaahan dan perbaikan peta Materi Teknis berdasarkan FGD &amp; asistensi ATR/BPN</li>
+          <li>Koordinasi dan sinkronisasi dengan RTRW Provinsi serta asistensi peta dengan BIG</li>
+          <li>Pendampingan FGD, Konsultasi Publik, asistensi substansi RTRW offline &amp; online</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">RTRW</span><span class="chip">FGD</span><span class="chip">Konsultasi Publik</span><span class="chip">GIS Mapping</span><span class="chip">BIG</span>
+        </div>
+      </div>
+
+      <div class="tl-item glass reveal">
+        <div class="tl-top">
+          <div class="tl-left">
+            <div class="tl-company">PT. Esri Indonesia</div>
+            <div class="tl-role">Student Intern — Solution Specialist</div>
+            <div class="tl-loc">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kota Jakarta
+            </div>
+          </div>
+          <div class="tl-right"><span class="period-pill">Feb – Mar 2021</span></div>
+        </div>
+        <ul class="tl-tasks">
+          <li>Membangun WebGIS post-disaster bencana banjir di Kalimantan Selatan</li>
+          <li>Mengecek Portal GIS Tata Ruang di seluruh Indonesia menggunakan REST service</li>
+          <li>Support kuesioner survei agen dan dashboard untuk sosialisasi ke BRI Agro</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip">ArcGIS Online</span><span class="chip">WebGIS</span><span class="chip">REST Service</span><span class="chip">Dashboard</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-tag">Akademik</p>
+      <h2>Riwayat Pendidikan</h2>
+      <p class="sec-sub">Tiga gelar yang membentuk perspektif multidisiplin</p>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card glass reveal">
+        <div class="edu-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="edu-deg">D-III Penginderaan Jauh &amp; SIG</div>
+        <div class="edu-uni">Universitas Gadjah Mada (UGM)</div>
+        <div class="edu-meta">
+          <span>Yogyakarta</span>
+          <span>2018 – 2021</span>
+        </div>
+        <div class="gpa">★ IPK: 3.55 / 4.00</div>
+        <div class="course-tags">
+          <span class="course">Kartografi</span>
+          <span class="course">Penginderaan Jauh</span>
+          <span class="course">SIG</span>
+          <span class="course">Pemodelan Spasial</span>
+          <span class="course">Fotogrametri</span>
+          <span class="course">Basis Data</span>
+        </div>
+      </div>
+      <div class="edu-card glass reveal">
+        <div class="edu-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="edu-deg">S-1 Geografi (Transfer)</div>
+        <div class="edu-uni">Universitas Muhammadiyah Surakarta</div>
+        <div class="edu-meta">
+          <span>Surakarta</span>
+          <span>2022 – 2023</span>
+        </div>
+        <div class="gpa">★ IPK: 3.49 / 4.00</div>
+        <div class="course-tags">
+          <span class="course">Geografi Pariwisata</span>
+          <span class="course">Geografi Perkotaan</span>
+          <span class="course">Geografi Politik</span>
+          <span class="course">Perencanaan Pariwisata</span>
+        </div>
+      </div>
+      <div class="edu-card glass reveal">
+        <div class="edu-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="edu-deg">S-1 Ilmu Komunikasi</div>
+        <div class="edu-uni">Universitas Terbuka</div>
+        <div class="edu-meta">
+          <span>Yogyakarta</span>
+          <span>2019 – 2024</span>
+        </div>
+        <div class="gpa">★ IPK: 3.07 / 4.00</div>
+        <div class="course-tags">
+          <span class="course">Public Speaking</span>
+          <span class="course">Komunikasi Massa</span>
+          <span class="course">Komunikasi Pemasaran</span>
+          <span class="course">Hubungan Masyarakat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-tag">Kompetensi</p>
+      <h2>Keahlian &amp; Teknologi</h2>
+      <p class="sec-sub">Dari desktop GIS hingga cloud &amp; web</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card glass reveal">
+        <div class="sk-head">
+          <div class="sk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+          <div class="sk-title">GIS &amp; Mapping Software</div>
+        </div>
+        <div class="skill-bars">
+          <div class="si"><div class="si-info"><span class="si-name">ArcGIS Suite</span><span class="si-lvl">Expert</span></div><div class="bar"><div class="bar-fill" data-w="92"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">QGIS</span><span class="si-lvl">Expert</span></div><div class="bar"><div class="bar-fill" data-w="90"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">Global Mapper</span><span class="si-lvl">Advanced</span></div><div class="bar"><div class="bar-fill" data-w="82"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">SAGA GIS</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="70"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">Surfer</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="68"></div></div></div>
+        </div>
+      </div>
+      <div class="skill-card glass reveal">
+        <div class="sk-head">
+          <div class="sk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="sk-title">Remote Sensing</div>
+        </div>
+        <div class="skill-bars">
+          <div class="si"><div class="si-info"><span class="si-name">Google Earth Engine</span><span class="si-lvl">Advanced</span></div><div class="bar"><div class="bar-fill" data-w="80"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">ENVI</span><span class="si-lvl">Advanced</span></div><div class="bar"><div class="bar-fill" data-w="78"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">Google Earth Pro</span><span class="si-lvl">Expert</span></div><div class="bar"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">Fotogrametri</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="65"></div></div></div>
+        </div>
+      </div>
+      <div class="skill-card glass reveal">
+        <div class="sk-head">
+          <div class="sk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <div class="sk-title">WebGIS &amp; Development</div>
+        </div>
+        <div class="skill-bars">
+          <div class="si"><div class="si-info"><span class="si-name">JavaScript / Leaflet.js</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="72"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">HTML &amp; CSS</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="70"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">SuperMap iClient</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="65"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">REST Service / API</span><span class="si-lvl">Intermediate</span></div><div class="bar"><div class="bar-fill" data-w="68"></div></div></div>
+        </div>
+      </div>
+      <div class="skill-card glass reveal">
+        <div class="sk-head">
+          <div class="sk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="sk-title">Office &amp; Productivity</div>
+        </div>
+        <div class="skill-bars">
+          <div class="si"><div class="si-info"><span class="si-name">Microsoft PowerPoint</span><span class="si-lvl">Expert</span></div><div class="bar"><div class="bar-fill" data-w="90"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">Microsoft Word</span><span class="si-lvl">Expert</span></div><div class="bar"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="si"><div class="si-info"><span class="si-name">Microsoft Excel</span><span class="si-lvl">Advanced</span></div><div class="bar"><div class="bar-fill" data-w="82"></div></div></div>
+        </div>
+      </div>
+      <div class="skill-card glass reveal">
+        <div class="sk-head">
+          <div class="sk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="sk-title">Soft Skills</div>
+        </div>
+        <div class="tags soft-tags">
+          <span class="tag">Public Speaking</span>
+          <span class="tag">Time Management</span>
+          <span class="tag">Team Leadership</span>
+          <span class="tag">Stakeholder Communication</span>
+          <span class="tag">FGD Facilitation</span>
+          <span class="tag">Report Writing</span>
+        </div>
+      </div>
+      <div class="skill-card glass reveal">
+        <div class="sk-head">
+          <div class="sk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="sk-title">Perencanaan Tata Ruang</div>
+        </div>
+        <div class="tags plan-tags">
+          <span class="tag">RDTR</span>
+          <span class="tag">RTRW</span>
+          <span class="tag">Materi Teknis</span>
+          <span class="tag">Raperkada</span>
+          <span class="tag">Album Peta</span>
+          <span class="tag">ATR/BPN</span>
+          <span class="tag">Urban Planning</span>
+          <span class="tag">Disaster Mapping</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-tag">Sertifikasi</p>
+      <h2>Lisensi &amp; Sertifikasi</h2>
+      <p class="sec-sub">Kompetensi terverifikasi secara nasional dan internasional</p>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card glass reveal">
+        <div class="cert-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="cert-body">
+          <div class="cert-title">Sertifikasi SKKNI — Analis SIG (Level 6)</div>
+          <div class="cert-issuer">Badan Nasional Sertifikasi Profesi (BNSP)</div>
+          <span class="period-pill">2023 – 2026</span>
+          <div class="cert-comps">
+            <span class="comp">Mengelola Tim Kerja</span>
+            <span class="comp">Perangkat Lunak SIG</span>
+            <span class="comp">Merancang Basis Data Spasial</span>
+            <span class="comp">Analisis SIG Lanjut</span>
+            <span class="comp">Membangun Model SIG</span>
+            <span class="comp">Kontrol Kualitas SIG</span>
+          </div>
+        </div>
+      </div>
+      <div class="cert-card glass reveal">
+        <div class="cert-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="cert-body">
+          <div class="cert-title">Bootcamp Google Earth Engine 3.0</div>
+          <div class="cert-issuer">Geocourse.id</div>
+          <span class="period-pill">2022</span>
+          <div class="cert-comps">
+            <span class="comp">Penginderaan Jauh Dasar</span>
+            <span class="comp">Google Earth Dasar</span>
+            <span class="comp">Aplikasi Google Earth</span>
+          </div>
+        </div>
+      </div>
+      <div class="cert-card glass reveal">
+        <div class="cert-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="cert-body">
+          <div class="cert-title">WebGIS Development Bootcamp: Basic Class</div>
+          <div class="cert-issuer">Geocourse.id</div>
+          <span class="period-pill">2022</span>
+          <div class="cert-comps">
+            <span class="comp">GIS &amp; Analisis Spasial</span>
+            <span class="comp">Front-End Development</span>
+            <span class="comp">JavaScript</span>
+            <span class="comp">Pemetaan API</span>
+          </div>
+        </div>
+      </div>
+      <div class="cert-card glass reveal">
+        <div class="cert-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        </div>
+        <div class="cert-body">
+          <div class="cert-title">SuperMap Skill Up 2.0</div>
+          <div class="cert-issuer">SuperMap</div>
+          <span class="period-pill">2021</span>
+          <div class="cert-comps">
+            <span class="comp">HTML, CSS, Bootstrap</span>
+            <span class="comp">SuperMap iClient JS</span>
+            <span class="comp">3D Analysis</span>
+            <span class="comp">Git Repository</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-tag">Kontak</p>
+      <h2>Mari Berkolaborasi</h2>
+      <p class="sec-sub">Terbuka untuk proyek GIS, konsultasi tata ruang, dan peluang kerja sama</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-items">
+          <a href="mailto:jokoprasetyo.gis@gmail.com" class="contact-item">
+            <div class="ci-icon blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="ci-label">Email</div><div class="ci-val">jokoprasetyo.gis@gmail.com</div></div>
+          </a>
+          <a href="tel:+6285117187050" class="contact-item">
+            <div class="ci-icon blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div><div class="ci-label">Telepon</div><div class="ci-val">+62 851 1718 7050</div></div>
+          </a>
+          <a href="https://wa.me/6285117187050" target="_blank" rel="noopener" class="contact-item">
+            <div class="ci-icon green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            <div><div class="ci-label">WhatsApp</div><div class="ci-val">+62 851 1718 7050</div></div>
+          </a>
+          <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" rel="noopener" class="contact-item">
+            <div class="ci-icon blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></div>
+            <div><div class="ci-label">LinkedIn</div><div class="ci-val">linkedin.com/in/jokoprasetyoid</div></div>
+          </a>
+          <div class="contact-item" style="cursor:default">
+            <div class="ci-icon orange"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="ci-label">Lokasi</div><div class="ci-val">Kab. Semarang, Jawa Tengah</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="glass contact-form-wrap reveal">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" id="c-name" placeholder="Nama Anda">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="c-email" placeholder="email@anda.com">
+          </div>
+          <div class="form-group">
+            <label>Topik</label>
+            <input type="text" id="c-subject" placeholder="Kolaborasi / Proyek">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Pesan</label>
+          <textarea id="c-msg" placeholder="Tuliskan pesan Anda..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="sendMsg()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Kirim Pesan
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p>© 2025 <strong>Joko Prasetyo, S.Geo</strong> · All rights reserved</p>
+      <p style="font-size:.75rem;margin-top:.25rem">GIS Analyst &amp; Spatial Planning Expert · Kab. Semarang, Indonesia</p>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/in/jokoprasetyoid/" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="mailto:jokoprasetyo.gis@gmail.com" title="Email">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+      <a href="https://wa.me/6285117187050" target="_blank" rel="noopener" title="WhatsApp">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="stBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+// Scroll reveal
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// Skill bars
+const so=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.bar-fill').forEach(f=>{setTimeout(()=>{f.style.width=f.dataset.w+'%'},200)});so.unobserve(e.target)}})},{threshold:.3});
+document.querySelectorAll('.skill-card').forEach(el=>so.observe(el));
+
+// Counter
+const nums=document.querySelectorAll('.stat-n[data-count]');
+const co=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.count;let s=0;const step=t/40;const iv=setInterval(()=>{s=Math.min(s+step,t);el.textContent=Math.round(s)+'+';if(s>=t)clearInterval(iv)},30);co.unobserve(el)}})},{threshold:.5});
+nums.forEach(n=>co.observe(n));
+
+// Scroll top
+window.addEventListener('scroll',()=>{document.getElementById('stBtn').classList.toggle('show',scrollY>500)});
+
+// Contact form
+function sendMsg(){
+  const n=document.getElementById('c-name').value;
+  const e=document.getElementById('c-email').value;
+  const s=document.getElementById('c-subject').value;
+  const m=document.getElementById('c-msg').value;
+  if(!n||!e||!m){alert('Mohon isi semua kolom');return}
+  window.location.href=`mailto:jokoprasetyo.gis@gmail.com?subject=${encodeURIComponent(s+' - dari '+n)}&body=${encodeURIComponent('Nama: '+n+'\nEmail: '+e+'\n\nPesan:\n'+m)}`;
+  document.getElementById('c-name').value='';
+  document.getElementById('c-email').value='';
+  document.getElementById('c-subject').value='';
+  document.getElementById('c-msg').value='';
+}
+
+// Active nav
+window.addEventListener('scroll',()=>{
+  const ss=document.querySelectorAll('section[id]');
+  let cur='';
+  ss.forEach(s=>{if(scrollY>=s.offsetTop-100)cur=s.id});
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.style.background=a.getAttribute('href')==='#'+cur?'rgba(26,86,219,0.08)':'';
+    a.style.color=a.getAttribute('href')==='#'+cur?'var(--accent)':'';
+  });
+});
+</script>
 </body>
 </html>
